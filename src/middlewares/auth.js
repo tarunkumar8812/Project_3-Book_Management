@@ -20,7 +20,6 @@ const authentication = async function (req, res, next) {
             //Set an attribute in request object 
             next();
         })
-
     }
     catch (err) {
         console.log(err.message)
@@ -57,6 +56,10 @@ const authorization = async function (req, res, next) {
     }
 }
 
+
+
+
+
 const authorization2 = async function (req, res, next) {
     try {
         if (req.body.userId) {
@@ -65,11 +68,10 @@ const authorization2 = async function (req, res, next) {
                 return res.status(403).send({ status: false, message: "You are not authorized" })
             }
             return next()
-        }else  return res.status(400).send({ status: false, message: "userId is mandatory" })
+        } else return res.status(400).send({ status: false, message: "userId is mandatory" })
     }
     catch (err) {
         res.status(500).send({ status: false, message: err.message })
     }
-
 }
-    module.exports = { authentication, authorization,authorization2 }
+module.exports = { authentication, authorization, authorization2 }
