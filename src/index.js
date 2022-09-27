@@ -7,7 +7,7 @@ require("dotenv").config()
 
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URL || "mongodb+srv://matheenahamad:9TNGWEhzUB0Ttemi@matheen.vtdepfw.mongodb.net/group57Database", {
+mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true
 })
     .then(() => console.log("MongoDb is connected"))
