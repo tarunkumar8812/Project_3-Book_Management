@@ -91,9 +91,9 @@ const userLogin = async function (req, res) {
 			userId: user_in_DB._id.toString(),
 			exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24), // After 24 hour it will expire 
 			iat: Math.floor(Date.now() / 1000)
-
 		}
-		res.status(201).send({ status: true, message: "Token has been successfully generated.", data: data });
+
+		res.status(200).send({ status: true, message: "Token has been successfully generated.", data: data });
 	}
 	catch (err) {
 		res.status(500).send({ status: false, message: "Error", error: err.message })

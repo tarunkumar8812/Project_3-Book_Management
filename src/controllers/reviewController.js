@@ -121,7 +121,7 @@ const deleteByBookId_ReviewId = async function (req, res) {
 
         if (!ObjectId(bookId)) { return res.status(400).send({ status: false, message: "bookId in param is not in format" }) }
 
-        if (!ObjectId(reviewId)) { return res.status(400).send({ status: false, message: "reviewId is not in format" }) }
+        if (!ObjectId(reviewId)) { return res.status(400).send({ status: false, message: "reviewId in param is not in format" }) }
 
         //  ------- checking existance of bookId -------
         const book_in_DB = await bookModel.findOne({ _id: bookId, isDeleted: false })

@@ -10,9 +10,8 @@ const { validBookTitle, validBookExcerpt, validUserId, validISBN, validCategory,
 
 
 
-//<=======================Create Book API=================================>
+//<------------------------------------------------ Create Book API ------------------------------------------------>
 
-//need to work on releasedAt
 const createBook = async function (req, res) {
     try {
         let data = req.body;
@@ -56,7 +55,7 @@ const createBook = async function (req, res) {
 
         //  ------------ creating new book ------------
         let savedData = await bookModel.create(data)
-        return res.status(201).send({ status: true, message: "success", data: savedData })
+        return res.status(201).send({ status: true, message: "Book successfully created", data: savedData })
 
     }
     catch (err) {
@@ -88,7 +87,7 @@ const books = async function (req, res) {
         const filter = { isDeleted: false }
 
         if (userId) {
-            if (userId == undefined || userId.trim() == "") return res.status(404).send({ status: false, message: "please give value of filter" })
+            if (userId == undefined || userId.trim() == "") return res.status(400).send({ status: false, message: "please give value of filter" })
 
             if (!ObjectId(userId.trim())) return res.status(400).send({ status: false, message: "Invalid UserId" })
 
@@ -96,13 +95,13 @@ const books = async function (req, res) {
         }
 
         if (category) {
-            if (category == undefined || category.trim() == "") return res.status(404).send({ status: false, message: "please give value of filter category" })
+            if (category == undefined || category.trim() == "") return res.status(400).send({ status: false, message: "please give value of filter category" })
 
             filter.category = category.trim()
         }
 
         if (subcategory) {
-            if (subcategory == undefined || subcategory.trim() == "") return res.status(404).send({ status: false, message: "please give value of filter Subcategory" })
+            if (subcategory == undefined || subcategory.trim() == "") return res.status(400).send({ status: false, message: "please give value of filter Subcategory" })
 
             filter.subcategory = subcategory.trim()
         }
@@ -131,7 +130,7 @@ const getParticularBook = async function (req, res) {
 
         let book = await bookModel.findOne({ _id: bookId, isDeleted: false }).select({ __v: 0, ISBN: 0, deletedAt: 0 })
 
-        if (!book) return res.status(404).send({ status: false, message: "Book is not found" })
+        if (!book) return res.status(404).send({ status: false, message: "Book not found" })
 
         reviewsData = await reviewModel.find({ bookId: bookId }).select({ isDeleted: 0, createdAt: 0, updatedAt: 0, __v: 0 })
 
@@ -160,31 +159,31 @@ const updateBookById = async function (req, res) {
         const filter = { isDeleted: false }
 
         if (title) {
-            if (validBookTitle_4_Update(title) != true) return res.status(404).send({ status: false, message: `${validBookTitle_4_Update(title)}` })
+            if (validBookTitle_4_Update(title) != true) return res.status(400).send({ status: false, message: `${validBookTitle_4_Update(title)}` })
 
             let title_in_DB = await bookModel.findOne({ title: title });
 
-            if (title_in_DB) return res.status(400).send({ status: false, message: " Title is already exist, Enter new book name...!" })
+            if (title_in_DB) return res.status(409).send({ status: false, message: " Title is already exist, Enter new book name...!" })
             filter.title = title.trim()
         }
 
         if (excerpt) {
-            if (validExcerpt_4_Update(excerpt) != true) return res.status(404).send({ status: false, message: `${validExcerpt_4_Update(excerpt)}` })
+            if (validExcerpt_4_Update(excerpt) != true) return res.status(400).send({ status: false, message: `${validExcerpt_4_Update(excerpt)}` })
 
             filter.excerpt = excerpt.trim()
         }
 
         if (ISBN) {
-            if (validISBN_4_Update(ISBN) != true) return res.status(404).send({ status: false, message: `${validISBN_4_Update(ISBN)}` })
+            if (validISBN_4_Update(ISBN) != true) return res.status(400).send({ status: false, message: `${validISBN_4_Update(ISBN)}` })
 
             let ISBN_in_DB = await bookModel.findOne({ ISBN: ISBN })
 
-            if (ISBN_in_DB) return res.status(400).send({ status: false, message: "ISBN Already Exists" })
+            if (ISBN_in_DB) return res.status(409).send({ status: false, message: "ISBN Already Exists" })
             filter.ISBN = ISBN
         }
 
         if (releasedAt) {
-            if (validReleasdAt_4_Update(releasedAt) != true) return res.status(404).send({ status: false, message: `${validReleasdAt_4_Update(releasedAt)}` })
+            if (validReleasdAt_4_Update(releasedAt) != true) return res.status(400).send({ status: false, message: `${validReleasdAt_4_Update(releasedAt)}` })
 
             filter.releasedAt = releasedAt
         }

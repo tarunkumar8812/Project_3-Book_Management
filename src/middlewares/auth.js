@@ -38,9 +38,8 @@ const authorization = async function (req, res, next) {
             if (!ObjectId(bookId)) { return res.status(400).send({ status: false, message: `${bookId}is not in MongoDb objectId format` }) }
 
             let bookdetails = await bookModel.findById(bookId)
-            if (!bookdetails) {
-                return res.status(400).send({ status: false, message: "bookId is invalid" })
-            }
+            if (!bookdetails) return res.status(400).send({ status: false, message: "bookId is invalid" })
+
 
             if (bookdetails.userId._id.toString() !== req.userId) {
                 return res.status(403).send({ status: false, message: "You are not authorized" })
